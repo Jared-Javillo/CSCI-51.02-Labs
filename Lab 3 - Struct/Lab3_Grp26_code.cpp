@@ -3,38 +3,14 @@
 
 using namespace std;
 
-IntNode *addNode(int x)
-{
-	IntNode *newNode = new IntNode;
-
-    newNode->data = x;
-    newNode->top_child = NULL;
-    newNode->parent = NULL;
-    return newNode;
-    delete newNode;
-}
-
-IntNode* push(IntNode *parent, IntNode *child){
-    parent -> top_child = child;
-    child -> parent = parent;
-    return child;
-}
-
-IntNode* pop(IntNode *poppedNode){
-	return poppedNode->parent;
-}
-
-int peek(IntNode peekedNode){
-    return peekedNode.data;
-}
-
 int main(void) {
     int inputInt;
+    IntStack stack;
     IntNode* pointer = new IntNode;
     IntNode* tempNode = new IntNode;
     cout << "Enter Integer of root node: ";
     cin >> inputInt;
-    pointer = addNode(inputInt);
+    pointer = stack.addNode(inputInt);
 
     while (true){
         cout << "\n----------------\n";
@@ -50,8 +26,8 @@ int main(void) {
                 cout << "Enter Digit: " << "\n";
                 cin >> inputInt;
                 cout << "Pushed " << inputInt << "\n" << "\n";
-                tempNode = addNode(inputInt);
-                pointer = push(pointer,tempNode);
+                tempNode = stack.addNode(inputInt);
+                pointer = stack.push(pointer,tempNode);
                 continue;
             }
             case 2:{
@@ -61,10 +37,10 @@ int main(void) {
                     pointer == NULL;
                     cout << "Please enter integer of new root node: ";
                     cin >> inputInt;
-                    pointer = addNode(inputInt);
+                    pointer = stack.addNode(inputInt);
                 } else {
                     cout << "Popped " << pointer->data << "\n" <<"\n";
-                    pointer = pop(pointer);
+                    pointer = stack.pop(pointer);
                 }
                 continue;
             }
