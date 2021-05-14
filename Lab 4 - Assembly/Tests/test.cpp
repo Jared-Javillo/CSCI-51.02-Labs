@@ -1,4 +1,4 @@
 int dummy(int x){
-    int ret = x * -100;
+    int ret = x * -5;
     return ret;
 }
