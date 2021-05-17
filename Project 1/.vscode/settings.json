@@ -3,6 +3,12 @@
         "iostream": "cpp",
         "istream": "cpp",
         "atomic": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "vector": "cpp",
+        "cmath": "cpp",
+        "initializer_list": "cpp",
+        "type_traits": "cpp",
+        "xutility": "cpp",
+        "string": "cpp"
     }
 }
