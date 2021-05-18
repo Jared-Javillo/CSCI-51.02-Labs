@@ -2,32 +2,33 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm> 
 #include <cstdlib>
 
 using namespace std;
 
 
-vector<int> procIntVector(int numProcess);
+vector<vector<int>> procIntVector(int numProcess);
 vector<int> intSplit(char input[100]);
 vector<string> splitStr(char input[100]);
+bool compArrTime(const vector<int> &a,const vector<int> &b);
 
-void ProcessCheck(string processType, int numProcess, vector<int> testIntVec);
-void doProcessFCFS(vector<int> intVector, int numProcess);
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec);
+void doProcessFCFS(vector<vector<int>> processVec, int numProcess );
 
 int main()
 {
     int numTests = 0;
     int x = 0;
-  
     char input[100];
 
     //Gets Test
     cin.getline(input,100);
     numTests = atoi(input);
-    
+
     for (int i = 1; i <= numTests; i++)
     {   
-        vector<int> testIntVec; 
+        vector<vector<int>> processVec; 
         vector<string> inputTest;
         int numProcess = 0;
 
@@ -35,19 +36,19 @@ int main()
         cin.getline(input,100);
         inputTest = splitStr(input);
         numProcess = stoi(inputTest[0]);
-        testIntVec = procIntVector(numProcess);
+        processVec = procIntVector(numProcess);
 
         //Executes Process
-        ProcessCheck(inputTest[1], stoi(inputTest[0]),testIntVec);
+        ProcessCheck(inputTest[1], stoi(inputTest[0]),processVec);
         
     }
     
 }
 
-void ProcessCheck(string processType, int numProcess, vector<int> testIntVec){
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec){
         if (processType == "FCFS")
         {
-            doProcessFCFS(testIntVec, numProcess);
+            doProcessFCFS(processVec, numProcess);
 
         }else if (processType == "SJF")
         {
@@ -85,36 +86,31 @@ vector<string> splitStr(char input[100]){
     return inputSplit;
 }
 
-void doProcessFCFS(vector<int> intVector, int numProcess ){
+void doProcessFCFS(vector<vector<int>> processVec, int numProcess ){
     int count = 0;
     int output = 0;
     //Process Finish
+    sort(processVec.begin(), processVec.end(),compArrTime);
     for (int i = 0; i < numProcess; i++)
     {
-        cout << intVector[count] <<" "<<intVector[count+1]<<" "<< intVector[count+2]<<"x"<<"\n";
-        count += 3;
+        cout << processVec[i][0] <<" "<<processVec[i][3]<<" "<< processVec[i][1]<<"x"<<"\n";
     }
-    //Total Time Elapsed
-    count -=3;
-    output = intVector[count] + intVector[count+1];
-    cout << "Total Time Elapsed: " << output << "ns" <<"\n";
 
-    //CPU Burst time
-    count = 0;
-    output = 0;
+    //Process Time Elapsed
+    cout <<"Total time elapsed: " <<processVec[numProcess-1][0] + processVec[numProcess-1][1]<<"ns\n";
+
     for (int i = 0; i < numProcess; i++)
     {
-        output += intVector[count+1];
-        count += 3;
+        output += processVec[i][1];
     }
-    cout << "Total CPU Burst Time: " << output << "ns" <<"\n";
+
+    cout <<"Total CPU burst time: " << output <<"ns"<< "\n";
+    
 }
 
-
-
-vector<int> procIntVector(int numProcess)
+vector<vector<int>> procIntVector(int numProcess)
 {
-    vector<int> intVec;
+    vector<vector<int>> processVec;
     vector<int> tempVec;
     char input[100];
     
@@ -122,10 +118,10 @@ vector<int> procIntVector(int numProcess)
     {
         cin.getline(input,100);
         tempVec = intSplit(input);
-        intVec.insert(intVec.end(), tempVec.begin(), tempVec.end());
+        tempVec.push_back(i+1);
+        processVec.push_back(tempVec);
     }
-
-    return intVec;    
+    return processVec;    
 }
 
 vector<int> intSplit(char input[100])
@@ -143,12 +139,16 @@ vector<int> intSplit(char input[100])
         inputSplit.push_back(chars_array);
         chars_array = strtok(NULL, " ");
     }
+
     count = 0;
     for (int i=0; i<= 2; i++)
     {
         int num = atoi(inputSplit.at(i).c_str());
         intSplit.push_back(num);
     }
-
     return intSplit;
+}
+
+bool compArrTime(const vector<int> &a,const vector<int> &b){
+    return a[0]<b[0];
 }
