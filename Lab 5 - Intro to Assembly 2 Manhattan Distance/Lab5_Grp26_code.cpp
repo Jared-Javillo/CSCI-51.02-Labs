@@ -21,6 +21,7 @@ vector<int> IntSplit(char input[100]){
         inputSplit.push_back(chars_array);
         chars_array = strtok(NULL, " ");
     }
+    
     count = 0;
     for (int i=0; i<= 2; i++)
     {
