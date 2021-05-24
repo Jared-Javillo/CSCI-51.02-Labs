@@ -53,10 +53,31 @@ void doProcessSJF(vector<vector<int>> processVec, int numProcess )
     cout << "Throughput: " << static_cast<float>(numProcess) / static_cast<float>(timePassed) << " processes/ns" <<"\n";
     sort(processVec.begin(), processVec.end(), compProcessNumber);
     sort(tempSTVec.begin(), tempSTVec.end(), compBurstTime);
+    //Waiting time
     cout << "Waiting Times: \n";
+    int total = 0;
     for (int i = 0; i < numProcess; i++)
     {
-        cout << " Process" << i+1 << ": " << tempSTVec[i][0] - processVec[i][0] << "ns\n";
+        cout << " Process " << i+1 << ": " << tempSTVec[i][0] - processVec[i][0] << "ns\n";
+        total = total + (tempSTVec[i][0] - processVec[i][0]);
     }
-    
+    cout << "Average waiting time: " << static_cast<float>(total)/static_cast<float>(numProcess) << "ns\n";
+    //Turnaround time
+    total = 0;
+    cout << "Turnaround Times: \n";
+    for (int i = 0; i < numProcess; i++)
+    {
+        cout << " Process " << i+1 << ": " << processVec[i][1]+(tempSTVec[i][0] - processVec[i][0]) << "ns\n";
+        total = total + (processVec[i][1]+(tempSTVec[i][0] - processVec[i][0]));
+    }
+    cout << "Average turnaround time: " << static_cast<float>(total)/static_cast<float>(numProcess) << "ns\n";
+    //Response time
+    total = 0;
+    cout << "Response Times: \n";
+    for (int i = 0; i < numProcess; i++)
+    {
+        cout << " Process " << i+1 << ": " << tempSTVec[i][0] - processVec[i][0] << "ns\n";
+        total = total + (tempSTVec[i][0] - processVec[i][0]);
+    }
+    cout << "Average response time: " << static_cast<float>(total)/static_cast<float>(numProcess) << "ns\n";
 }
