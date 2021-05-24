@@ -9,6 +9,8 @@
         "initializer_list": "cpp",
         "type_traits": "cpp",
         "xutility": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp"
     }
 }

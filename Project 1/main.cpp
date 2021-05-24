@@ -5,16 +5,15 @@
 #include <algorithm> 
 #include <cstdlib>
 
+#include "fcfs.h"
 using namespace std;
 
-
+//Utils
 vector<vector<int>> procIntVector(int numProcess);
 vector<int> intSplit(char input[100]);
 vector<string> splitStr(char input[100]);
-bool compArrTime(const vector<int> &a,const vector<int> &b);
 
 void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec);
-void doProcessFCFS(vector<vector<int>> processVec, int numProcess );
 
 int main()
 {
@@ -71,59 +70,6 @@ void ProcessCheck(string processType, int numProcess, vector<vector<int>> proces
         }
 }
 
-vector<string> splitStr(char input[100]){
-    vector<string> inputSplit;
-    char* chars_array;
-    int count=0;
-
-    chars_array = strtok(input," ");
-        while(chars_array)
-        {
-            count++;
-            inputSplit.push_back(chars_array);
-            chars_array = strtok(NULL, " ");
-        }
-    return inputSplit;
-}
-
-void doProcessFCFS(vector<vector<int>> processVec, int numProcess ){
-    int count = 0;
-    int output = 0;
-    //Process Finish
-    sort(processVec.begin(), processVec.end(),compArrTime);
-    for (int i = 0; i < numProcess; i++)
-    {
-        cout << processVec[i][0] <<" "<<processVec[i][3]<<" "<< processVec[i][1]<<"x"<<"\n";
-    }
-
-    //Process Time Elapsed
-    cout <<"Total time elapsed: " <<processVec[numProcess-1][0] + processVec[numProcess-1][1]<<"ns\n";
-
-    for (int i = 0; i < numProcess; i++)
-    {
-        output += processVec[i][1];
-    }
-
-    cout <<"Total CPU burst time: " << output <<"ns"<< "\n";
-    
-}
-
-vector<vector<int>> procIntVector(int numProcess)
-{
-    vector<vector<int>> processVec;
-    vector<int> tempVec;
-    char input[100];
-    
-    for (int i = 0; i < numProcess; i++)
-    {
-        cin.getline(input,100);
-        tempVec = intSplit(input);
-        tempVec.push_back(i+1);
-        processVec.push_back(tempVec);
-    }
-    return processVec;    
-}
-
 vector<int> intSplit(char input[100])
 {
     int count = 0;
@@ -149,6 +95,33 @@ vector<int> intSplit(char input[100])
     return intSplit;
 }
 
-bool compArrTime(const vector<int> &a,const vector<int> &b){
-    return a[0]<b[0];
+vector<vector<int>> procIntVector(int numProcess)
+{
+    vector<vector<int>> processVec;
+    vector<int> tempVec;
+    char input[100];
+    
+    for (int i = 0; i < numProcess; i++)
+    {
+        cin.getline(input,100);
+        tempVec = intSplit(input);
+        tempVec.push_back(i+1);
+        processVec.push_back(tempVec);
+    }
+    return processVec;    
+}
+
+vector<string> splitStr(char input[100]){
+    vector<string> inputSplit;
+    char* chars_array;
+    int count=0;
+
+    chars_array = strtok(input," ");
+        while(chars_array)
+        {
+            count++;
+            inputSplit.push_back(chars_array);
+            chars_array = strtok(NULL, " ");
+        }
+    return inputSplit;
 }
