@@ -13,7 +13,7 @@ vector<vector<int>> procIntVector(int numProcess);
 vector<int> intSplit(char input[100]);
 vector<string> splitStr(char input[100]);
 
-void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec);
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x);
 
 int main()
 {
@@ -38,15 +38,17 @@ int main()
         processVec = procIntVector(numProcess);
 
         //Executes Process
-        ProcessCheck(inputTest[1], stoi(inputTest[0]),processVec);
+        x=i;
+        ProcessCheck(inputTest[1], stoi(inputTest[0]),processVec, x);
         
     }
     
 }
 
-void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec){
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x){
         if (processType == "FCFS")
         {
+            cout << endl << x << " FCFS" << endl;
             doProcessFCFS(processVec, numProcess);
 
         }else if (processType == "SJF")
