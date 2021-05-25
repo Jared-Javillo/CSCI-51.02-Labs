@@ -2,11 +2,6 @@
 
 using namespace std;
 
-bool compBurstProcNum(const vector<int> &a, const vector<int> &b)
-{
-    return a[1] < b[1];
-}
-
 void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
 {
     int finProcess = 0;
@@ -57,7 +52,7 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
         sort(arrivedVec.begin(), arrivedVec.end(), compBurstProcNum);
 
         //If no process in CPU
-        if (solving.empty())
+        if (solving.empty() && !arrivedVec.empty())
         {
             //add first process to CPU
             solving = arrivedVec[0];

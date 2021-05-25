@@ -10,63 +10,131 @@ bool compArrProcNum(const vector<int> &a,const vector<int> &b){
     return a[3] < b[3];
 }
 
-void doProcessFCFS(vector<vector<int>> processVec, int numProcess ){
-    int count = 0;
-    int output = 0;
-    int timePassed = 0;
-    //Process Finish
-    sort(processVec.begin(), processVec.end(),compArrTime);
-    for (int i = 0; i < numProcess; i++)
-    {
-        if(timePassed < processVec[i][0]  )
-        {
-            timePassed += (processVec[i][0] - timePassed) + processVec[i][1];
-        }else if(timePassed >= processVec[i][0])
-        {
-            timePassed +=  processVec[i][1];
-        }
-        cout << timePassed << "\n";
-        cout << processVec[i][0] <<" "<<processVec[i][3]<<" "<< processVec[i][1]<<"x"<<"\n";
-    }
-
-    //Output Time
-    cout <<"Total time elapsed: " << timePassed <<"ns\n";
-
-    for (int i = 0; i < numProcess; i++)
-    {
-        output += processVec[i][1];
-    }
-
-    //Output Overalls
-    cout <<"Total CPU burst time: " << output <<"ns"<< "\n"; 
-    output = ( static_cast<float>(output) / static_cast<float>(timePassed) ) *100;
-    cout <<"CPU Utilization: "<< output << "%\n";
-    cout << "Throughput: " << static_cast<float>(numProcess) / static_cast<float>(timePassed);
-    cout << " processes/ns" <<"\n";
-
-    //Output Waiting times per Process
-    cout << "Waiting Times: \n";
-    for (int i = 0; i < numProcess; i++)
-    {
-        cout << "Process " << i+1 << " " << "0ns\n";
-    }cout << "Average waiting time: 0ns \n";
-
-    sort(processVec.begin(), processVec.end(),compArrProcNum);
-
-    //Output Turnaround times per Process
-    cout << "Turnaround Times: \n";
-    output = 0;
-    for (int i = 0; i < numProcess; i++)
-    {
-        cout << "Process " << i + 1 << " " << processVec[i][1] << "ns\n";
-        output += processVec[i][1];
-    }cout << "Average Turnaround time: " << output/numProcess <<"ns\n";
-    
-    //Output Response times per Process
-    cout << "Response Times: \n";
-    for (int i = 0; i < numProcess; i++)
-    {
-        cout << "Process " << i+1 << " " << "0ns\n";
-    }cout << "Average response time: 0ns \n";
+bool compBurstProcNum(const vector<int> &a, const vector<int> &b)
+{
+    return a[1] < b[1];
 }
 
+void doProcessFCFS(vector<vector<int>> processVec, int numProcess)
+{
+    int finProcess = 0;
+    int worldTime = 0;
+    int procTime = 0;
+    int total = 0;
+
+    vector<vector<int>> arrivedVec;
+    vector<int> solving;
+    vector<int> waitingTimes;
+    vector<int> burstTimes;
+    vector<int> arrivalTimes;
+    vector<int> startTimes;
+
+    int totalCPU = 0;
+    const int numProcessConst = numProcess;
+
+    //Filling Vectors for Output
+    for (int i = 0; i < numProcess; i++)
+    {
+        totalCPU += processVec[i][1];
+        burstTimes.push_back(processVec[i][1]);
+        waitingTimes.push_back(0);
+        startTimes.push_back(0);
+        arrivalTimes.push_back(processVec[i][0]);
+    }
+    
+    sort(processVec.begin(), processVec.end(), compArrTime);
+
+    while (worldTime < 110 )
+    {
+        
+        //Arriving Processes
+        for (int i = 0; i < numProcess; i++)
+        {
+            if(processVec[i][0] <= 0)
+            {
+                arrivedVec.push_back(processVec[i]);
+                processVec.erase(processVec.begin() + i);
+                numProcess -= 1;
+                i -= 1;
+            }
+            else
+            {
+                processVec[i][0] = processVec[i][0] - 1;
+            }
+        }
+
+        //If no process in CPU
+        if (solving.empty() && !arrivedVec.empty())
+        {
+            //add first process to CPU
+            solving = arrivedVec[0];
+            arrivedVec.erase(arrivedVec.begin());
+        }
+
+        if (!solving.empty())
+        {
+            //if its the process's first time
+            if (burstTimes[solving[3] - 1] == solving[1])
+            {
+                startTimes[solving[3] - 1] = worldTime;
+            }
+            
+            //Process is processing
+            solving[1] -= 1;
+            procTime ++;
+
+            //If process is finished
+            if (solving[1] <= 0)
+            {
+                //delete process from CPU and output
+                solving[1] = 0;
+                cout << worldTime - procTime +1 << " " << solving[3] << " " << procTime << "x\n";
+                solving.clear();
+                procTime = 0;
+            }
+        }
+
+        //Add waiting time for process in arrivedVec
+        for (int i = 0; i < arrivedVec.size(); i++)
+        {
+            waitingTimes[arrivedVec[0][3]-1] ++;
+        }
+
+        worldTime++;
+    }
+
+    //Total Stats
+    cout << "Total time elapsed: " << worldTime << "ns\n";
+    cout << "Total CPU burst time: " << totalCPU << "ns\n";
+    cout << "Throughput: " << static_cast<float>(numProcessConst) / static_cast<float>(worldTime);
+    cout << " processes/ns" <<"\n";
+
+    //Waiting Times
+    cout << "Waiting Times: \n";
+    for (int i = 0; i < numProcessConst; i++)
+    {
+        cout << " Process " << i + 1 << ": " << waitingTimes[i] << "ns\n";
+        total += waitingTimes[i];
+    }
+    cout << "Average waiting time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns\n";
+    
+    //Turnaround Times
+    cout << "Turnaround Times: \n";
+    total = 0;
+    for (int i = 0; i < numProcessConst; i++)
+    {
+        cout << " Process " << i + 1 << ": " << waitingTimes[i] + burstTimes[i]<< "ns\n";
+        total += waitingTimes[i] + burstTimes[i];
+    }
+    cout << "Average turnaround time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns\n";
+
+    //Response Times
+    cout << "Response Times: \n";
+    total = 0;
+    for (int i = 0; i < numProcessConst; i++)
+    {
+        cout << " Process " << i + 1 << ": " << startTimes[i] - arrivalTimes[i]<< "ns\n";
+        total +=  startTimes[i] - arrivalTimes[i];
+    }
+    cout << "Average Response time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns\n";
+}
