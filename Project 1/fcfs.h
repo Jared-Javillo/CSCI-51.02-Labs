@@ -44,7 +44,7 @@ void doProcessFCFS(vector<vector<int>> processVec, int numProcess)
     
     sort(processVec.begin(), processVec.end(), compArrTime);
 
-    while (worldTime < 110 )
+    while (!processVec.empty() || !(arrivedVec.empty()) || !(solving.empty()))
     {
         
         //Arriving Processes
