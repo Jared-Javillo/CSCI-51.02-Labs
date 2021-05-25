@@ -142,5 +142,5 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
         cout << " Process " << i + 1 << ": " << startTimes[i] - arrivalTimes[i]<< "ns\n";
         total +=  startTimes[i] - arrivalTimes[i];
     }
-    cout << "Average Response time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns\n";
+    cout << "Average Response time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns";
 }

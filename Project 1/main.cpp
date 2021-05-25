@@ -9,6 +9,7 @@
 #include "sjf.h"
 #include "srtf.h"
 #include "p.h"
+#include "rr.h"
 
 using namespace std;
 
@@ -17,13 +18,14 @@ vector<vector<int>> procIntVector(int numProcess);
 vector<int> intSplit(char input[100]);
 vector<string> splitStr(char input[100]);
 
-void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x);
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x, int quantumSlice);
 
 int main()
 {
     int numTests = 0;
     int x = 0;
     char input[100];
+    int quantumSlice = 0;
 
     //Gets Test
     cin.getline(input,100);
@@ -41,15 +43,20 @@ int main()
         numProcess = stoi(inputTest[0]);
         processVec = procIntVector(numProcess);
 
+        if (inputTest[1] == "RR")
+        {
+            quantumSlice = stoi(inputTest[2]);
+        }
+        
         //Executes Process
         x=i;
-        ProcessCheck(inputTest[1], stoi(inputTest[0]),processVec, x);
+        ProcessCheck(inputTest[1], stoi(inputTest[0]),processVec, x, quantumSlice);
         
     }
     
 }
 
-void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x){
+void ProcessCheck(string processType, int numProcess, vector<vector<int>> processVec, int x, int quantumSlice){
         if (processType == "FCFS")
         {
             cout << endl << x << " FCFS" << endl;
@@ -72,7 +79,8 @@ void ProcessCheck(string processType, int numProcess, vector<vector<int>> proces
 
         }else if(processType == "RR")
         {
-            cout << "Used Round Robin\n";
+            cout << endl << x << " RR" << endl;
+            doProcessRR(processVec, numProcess, quantumSlice);
         }else
         {
             cout <<"Error: Input not Valid\n";

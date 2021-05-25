@@ -79,5 +79,5 @@ void doProcessSJF(vector<vector<int>> processVec, int numProcess )
         cout << " Process " << i+1 << ": " << tempSTVec[i][0] - processVec[i][0] << "ns\n";
         total = total + (tempSTVec[i][0] - processVec[i][0]);
     }
-    cout << "Average response time: " << static_cast<float>(total)/static_cast<float>(numProcess) << "ns\n";
+    cout << "Average response time: " << static_cast<float>(total)/static_cast<float>(numProcess) << "ns";
 }
