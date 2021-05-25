@@ -7,6 +7,7 @@
 
 #include "fcfs.h"
 #include "sjf.h"
+#include "srtf.h"
 using namespace std;
 
 //Utils
@@ -59,7 +60,8 @@ void ProcessCheck(string processType, int numProcess, vector<vector<int>> proces
 
         }else if (processType == "SRTF")
         {
-            cout << "Used Shortest Remaining Time First\n";
+            cout << endl << x << " SRTF" << endl;
+            doProcessSRTF(processVec, numProcess);
 
         }else if(processType == "P")
         {
