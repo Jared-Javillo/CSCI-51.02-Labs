@@ -6,6 +6,7 @@
 #include <cstdlib>
 
 #include "fcfs.h"
+#include "sjf.h"
 using namespace std;
 
 //Utils
@@ -53,7 +54,8 @@ void ProcessCheck(string processType, int numProcess, vector<vector<int>> proces
 
         }else if (processType == "SJF")
         {
-            cout << "Used Shortest Job First\n";
+            cout << endl << x << " SJF" << endl;
+            doProcessSJF(processVec, numProcess);
 
         }else if (processType == "SRTF")
         {
