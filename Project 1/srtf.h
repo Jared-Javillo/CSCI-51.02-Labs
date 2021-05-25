@@ -106,6 +106,8 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
     //Total Stats
     cout << "Total time elapsed: " << worldTime << "ns\n";
     cout << "Total CPU burst time: " << totalCPU << "ns\n";
+    totalCPU = ( static_cast<float>(totalCPU) / static_cast<float>(worldTime) ) *100;
+    cout << "CPU Utilization: " << totalCPU << "%\n";
     cout << "Throughput: " << static_cast<float>(numProcessConst) / static_cast<float>(worldTime);
     cout << " processes/ns" <<"\n";
 
