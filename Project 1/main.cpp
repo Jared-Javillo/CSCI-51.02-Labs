@@ -8,6 +8,7 @@
 #include "fcfs.h"
 #include "sjf.h"
 #include "srtf.h"
+#include "p.h"
 
 using namespace std;
 
@@ -66,7 +67,8 @@ void ProcessCheck(string processType, int numProcess, vector<vector<int>> proces
 
         }else if(processType == "P")
         {
-            cout << "Used Priority\n";
+            cout << endl << x << " P" << endl;
+            doProcessP(processVec, numProcess);
 
         }else if(processType == "RR")
         {
