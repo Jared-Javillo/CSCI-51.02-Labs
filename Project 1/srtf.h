@@ -59,7 +59,7 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
             arrivedVec.erase(arrivedVec.begin());
         }
 
-        //if ArrivedVec process is faster than process CPU (Premption)
+        //if ArrivedVec process is faster than process CPU (Preemption)
         if (arrivedVec[0][1] < solving[1])
         {
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
@@ -97,8 +97,6 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
         {
             waitingTimes[arrivedVec[0][3]-1] ++;
         }
-
-        
 
         worldTime++;
     }
