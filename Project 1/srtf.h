@@ -59,8 +59,8 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
             arrivedVec.erase(arrivedVec.begin());
         }
 
-        //if ArrivedVec process is faster than process CPU (Preemption)
-        if (arrivedVec[0][1] < solving[1])
+        //if ArrivedVec process is faster than process CPU (Premption)
+        if (arrivedVec[0][1] < solving[1] && !arrivedVec.empty())
         {
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
             arrivedVec.push_back(solving);
@@ -97,6 +97,8 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
         {
             waitingTimes[arrivedVec[0][3]-1] ++;
         }
+
+        
 
         worldTime++;
     }
@@ -136,5 +138,5 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
         cout << " Process " << i + 1 << ": " << startTimes[i] - arrivalTimes[i]<< "ns\n";
         total +=  startTimes[i] - arrivalTimes[i];
     }
-    cout << "Average Response time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns";
+    cout << "Average Response time: " << static_cast<float>(total) /static_cast<float>(numProcessConst) << "ns\n";
 }
