@@ -63,7 +63,7 @@ void doProcessP(vector<vector<int>> processVec, int numProcess)
             arrivedVec.erase(arrivedVec.begin());
         }
         //if ArrivedVec process is faster than process CPU (Premption)
-        if (arrivedVec[0][2] < solving[2])
+        if (arrivedVec[0][2] < solving[2] && !arrivedVec.empty())
         {
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
             arrivedVec.push_back(solving);
