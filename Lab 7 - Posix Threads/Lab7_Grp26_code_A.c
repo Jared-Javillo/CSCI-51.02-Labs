@@ -13,7 +13,7 @@ void* function_thread(void* arg)
     long long old = *limit_ptr;
 
     // If Even  
-    if (threadID % 2 != 0)
+    if (threadID % 2 == 0)
     {
         output = old*old*old;
     }
