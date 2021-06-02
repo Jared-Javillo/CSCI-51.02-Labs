@@ -32,7 +32,7 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
     
     sort(processVec.begin(), processVec.end(), compArrTime);
 
-    while (worldTime < 100)
+    while (!processVec.empty() || !(arrivedVec.empty()) || !(solving.empty()))
     {
         
         //Arriving Processes
@@ -60,7 +60,7 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
         }
 
 
-        //if ArrivedVec process is faster than process CPU (Preemption)
+        //if ArrivedVec process has used up its given time
         if (procTime >= quantumSlice)
         {
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
