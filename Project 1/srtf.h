@@ -65,6 +65,7 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
             arrivedVec.push_back(solving);
             solving = arrivedVec[0];
+            cout << "erased: " << arrivedVec[0][3] << "\n";
             arrivedVec.erase(arrivedVec.begin());
             procTime = 0;
         }
@@ -95,7 +96,7 @@ void doProcessSRTF(vector<vector<int>> processVec, int numProcess)
         //Add waiting time for process in arrivedVec
         for (int i = 0; i < arrivedVec.size(); i++)
         {
-            waitingTimes[arrivedVec[0][3]-1] ++;
+            waitingTimes[arrivedVec[i][3]-1] ++;
         }
 
         

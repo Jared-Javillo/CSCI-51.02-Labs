@@ -32,7 +32,7 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
     
     sort(processVec.begin(), processVec.end(), compArrTime);
 
-    while (!processVec.empty() || !(arrivedVec.empty()) || !(solving.empty()))
+    while (!processVec.empty() || !(arrivedVec.empty()) || !(solving.empty()) ||!(fatBirdVec.empty()))
     {
         
         //Arriving Processes
@@ -40,15 +40,26 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
         {
             if(processVec[i][0] <= 0)
             {
-                arrivedVec.insert(arrivedVec.begin(),processVec[i]);
-                processVec.erase(processVec.begin() + i);
+                arrivedVec.push_back(processVec[i]);
+                processVec.erase(processVec.begin());
                 numProcess -= 1;
                 i -= 1;
+                
             }
             else
             {
                 processVec[i][0] = processVec[i][0] - 1;
             }
+        }
+        
+        if(solving.empty() && arrivedVec.empty() && !fatBirdVec.empty())
+        {
+            for (int i = 0; i < fatBirdVec.size(); i++)
+            {
+                arrivedVec.push_back(fatBirdVec[i]);
+                fatBirdVec.erase(fatBirdVec.begin()+i );
+            }
+            
         }
 
         //If no process in CPU
@@ -63,14 +74,25 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
         //if ArrivedVec process has used up its given time
         if (procTime >= quantumSlice)
         {
+
             cout << worldTime - procTime<< " " << solving[3] << " " << procTime << "\n";
-            arrivedVec.push_back(solving);
+            fatBirdVec.push_back(solving);
+            if(arrivedVec.empty() && !fatBirdVec.empty())
+            {
+                for (int i = 0; i < fatBirdVec.size(); i++)
+                {
+                    arrivedVec.push_back(fatBirdVec[i]);
+                    fatBirdVec.erase(fatBirdVec.begin()+i );
+                }
+            }
             solving = arrivedVec[0];
+
             arrivedVec.erase(arrivedVec.begin());
             procTime = 0;
+
         }
 
-
+                
         //If there is a process in CPU
         if (!solving.empty())
         {
@@ -92,20 +114,32 @@ void doProcessRR(vector<vector<int>> processVec, int numProcess, int quantumSlic
                 cout << worldTime - procTime +1 << " " << solving[3] << " " << procTime << "x\n";
                 solving.clear();
                 procTime = 0;
+
                 
             }
 
         }
- 
-        
 
-        //Add waiting time for process in arrivedVec
-        for (int i = 0; i < arrivedVec.size(); i++)
+        if(!fatBirdVec.empty())
         {
-            waitingTimes[arrivedVec[0][3]-1] ++;
+            for (int i = 0; i < fatBirdVec.size(); i++)
+            {
+                waitingTimes[fatBirdVec[i][3]-1] ++;
+            }
         }
 
+        if (!arrivedVec.empty())
+        {
+            //Add waiting time for process in arrivedVec
+            for (int i = 0; i < arrivedVec.size(); i++)
+            {
+                waitingTimes[arrivedVec[i][3]-1] ++;
+            }
+        }
+        
+         
         worldTime++;
+       
     }
 
     //Total Stats
